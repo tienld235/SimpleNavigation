@@ -73,13 +73,13 @@ LoginStack.navigationOptions = ({ navigation }) => {
     };
 };
 
-const AuthTabs = createBottomTabNavigator({ LoginStack, RegisterScreen });
+const AuthTabs = createBottomTabNavigator({ LoginStack, RegisterScreen }, {tabBarOptions:{activeTintColor: '#1BA957'}});
 
 const MainNavigator = Platform.select({
     ios: createBottomTabNavigator({ HomeStack, SettingsStack }),
     android: createDrawerNavigator({ HomeStack, SettingsStack }, { contentComponent: BurgerMenu })
 })
 
-const RootSwitch = createSwitchNavigator({ LoadingScreen, MainNavigator, AuthTabs }, { initialRouteName: "MainNavigator" });
+const RootSwitch = createSwitchNavigator({ LoadingScreen, MainNavigator, AuthTabs }, { initialRouteName: "AuthTabs" });
 
 export default createAppContainer(RootSwitch);
