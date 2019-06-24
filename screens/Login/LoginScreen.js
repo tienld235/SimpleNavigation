@@ -1,35 +1,92 @@
 import styles from './styles';
 import React, { Component } from 'react';
-import { Text, View, TextInput } from 'react-native';
+import { View, TextInput, Alert, Keyboard } from 'react-native';
 import { Button, Icon, Image } from 'react-native-elements';
-// import Icon from 'react-native-vector-icons/FontAwesome'
 import LoginLogo from '../../assets/images/loginLogo.jpg';
+import { firebaseApp } from '../../utils/firebaseConfig';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class LoginScreen extends Component {
-  state={
-    username:'',
-    password:''
+  state = {
+    email: '',
+    password: ''
+  }
+  constructor(props) {
+    super(props);
+    AsyncStorage.getItem('token_login').then((userToken) => {
+      this.props.navigation.navigate(userToken ? 'MainNavigator' : 'AuthTabs');
+    })
   }
 
   static navigationOptions = {
     header: null
   }
+
+  componentDidMount() {
+  }
+
+  componentDidUpdate(prevProps, prevStates) {
+    let email = this.props.navigation.getParam("email");
+    let password = this.props.navigation.getParam("password");
+    if (email !== prevProps.navigation.getParam("email") && password != prevProps.navigation.getParam("password")) {
+      this.setState({ email, password });
+    }
+  }
+
+  handleInput = (inputField) => {
+    return (text) => {
+      this.setState({ [inputField]: text })
+    }
+  }
+
+  handleLogin = async () => {
+    const { email, password } = this.state;
+    const { navigation } = this.props;
+    const firebaseLogin = await firebaseApp.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+      Alert.alert(
+        'Fail To Login!',
+        error.message,
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ],
+        { cancelable: false },
+      );
+    });
+    console.log("Login", firebaseLogin);
+    if (firebaseLogin) {
+      await Keyboard.dismiss();
+      await AsyncStorage.setItem("token_login", this.state.email);
+      navigation.navigate("LoadingScreen", {
+        request: "Login",
+        email
+      })
+    }
+  }
   render() {
     const { navigation } = this.props;
+    const { email, password } = this.state;
+    // console.log("email", email);
+    // console.log("password", password);
+    console.log("token", AsyncStorage.getItem("token_login"));
+
     return (
       <View style={styles.container}>
         <Image source={LoginLogo} style={{ width: 150, height: 150 }} />
         <TextInput
-          placeholder='Username'
+          value={email}
+          placeholder='Email'
           style={styles.input}
           placeholderTextColor={"#1BA957"}
+          onChangeText={this.handleInput("email")}
         />
 
         <TextInput
+          value={password}
           secureTextEntry={true}
           placeholder='Password'
           style={styles.input}
           placeholderTextColor={"#1BA957"}
+          onChangeText={this.handleInput("password")}
         />
         <View style={{ flexDirection: 'row', marginTop: 30 }}>
           <Button title={"Login"}
@@ -44,9 +101,7 @@ class LoginScreen extends Component {
                 color="white"
               />
             }
-            onPress={() => navigation.navigate("LoadingScreen", {
-              request: "Login"
-            })}
+            onPress={this.handleLogin}
           />
           <View style={{ width: 20 }} />
           <Button

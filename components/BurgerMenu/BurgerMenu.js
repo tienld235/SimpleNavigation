@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import {ScrollView} from 'react-native';
 import { Button} from 'react-native-elements';
 import {DrawerItems, SafeAreaView, withNavigation} from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class BurgerMenu extends PureComponent{
     constructor(props){
@@ -15,9 +16,11 @@ class BurgerMenu extends PureComponent{
                 <ScrollView style={styles.container}>
                     <DrawerItems {...this.props} />
                 </ScrollView>
-                <Button icon={{ name: "md-log-out", type: "ionicon" }} title="Log Out" onPress={() => navigation.navigate("LoadingScreen", {
-                    request : "Logout"
-                })} />
+                <Button icon={{ name: "md-log-out", type: "ionicon" }} title="Log Out" onPress={async () => 
+                {
+                    await AsyncStorage.clear();
+                    navigation.navigate("LoadingScreen", {request : "Logout"}
+                )}} />
             </SafeAreaView>
         )
     }

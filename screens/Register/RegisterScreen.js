@@ -1,6 +1,6 @@
 import styles from './styles';
 import React, { Component } from 'react';
-import { TextInput, View, Platform, Alert } from 'react-native';
+import { TextInput, View, Platform, Alert, Keyboard } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { firebaseApp } from '../../utils/firebaseConfig';
 
@@ -9,6 +9,7 @@ class RegisterScreen extends Component {
     email: '',
     password: '',
     repassword: '',
+    loadingButton: false
   }
   static navigationOptions = {
     tabBarLabel: "Register",
@@ -25,6 +26,10 @@ class RegisterScreen extends Component {
 
   handleSubmit = async () => {
     const { email, password, repassword } = this.state;
+    const { navigation } = this.props;
+
+    await this.setState({ loadingButton: true })
+    await Keyboard.dismiss();
     if (password !== repassword) {
       Alert.alert(
         'Re-enter Password',
@@ -35,7 +40,8 @@ class RegisterScreen extends Component {
         { cancelable: false },
       )
     } else {
-      const fireBaseSignUp = await firebaseApp.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+      const fireBaseSignUp = await firebaseApp.auth().createUserWithEmailAndPassword(email, password).catch(async (error) => {
+        await this.setState({ loadingButton: false })
         Alert.alert(
           'Fail To Sign Up',
           error.message,
@@ -45,7 +51,22 @@ class RegisterScreen extends Component {
           { cancelable: false },
         );
       });
-      console.log("123", fireBaseSignUp);
+      if (fireBaseSignUp) {
+        Alert.alert(
+          'Email Register Succeed!',
+          "You can login by this email now!",
+          [
+            {
+              text: 'OK', onPress: async () => {
+                await Keyboard.dismiss();
+                await this.setState({ loadingButton: false })
+                navigation.navigate("LoginScreen", { email, password });
+              }
+            },
+          ],
+          { cancelable: false },
+        )
+      }
     }
   }
 
@@ -87,6 +108,7 @@ class RegisterScreen extends Component {
                 color="white"
               />
             }
+            loading={this.state.loadingButton}
             onPress={this.handleSubmit}
           />
         </View>
