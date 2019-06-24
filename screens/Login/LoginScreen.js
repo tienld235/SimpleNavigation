@@ -22,9 +22,6 @@ class LoginScreen extends Component {
     header: null
   }
 
-  componentDidMount() {
-  }
-
   componentDidUpdate(prevProps, prevStates) {
     let email = this.props.navigation.getParam("email");
     let password = this.props.navigation.getParam("password");

@@ -1,15 +1,65 @@
+import React, { Component } from 'react'
+import { Text, View, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
+import Axios from 'axios';
 import styles from './styles';
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+export default class DetailScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      page: 1,
+      isLoading: true
+    }
+  }
 
-class DetailScreen extends Component {
+  componentDidMount() {
+    this.getData();
+  }
+
+  renderFooter = () => (
+    this.state.isLoading ?
+      <View style={styles.loader}>
+        <ActivityIndicator size={"large"} />
+      </View> : null
+  )
+
+  renderRow = ({ item }) => (
+    <View style={styles.item}>
+      <Text style={styles.itemText}>{item.id}</Text>
+      <Image style={styles.itemImage} source={{ uri: item.url }} />
+      <Text style={styles.itemText}>{item.title}</Text>
+    </View>
+  )
+  getData = async () => {
+    let response = await Axios.get(`https://jsonplaceholder.typicode.com/photos?_limit=5&_page=${this.state.page}`);
+    let data = await response.data;
+    
+    this.setState({
+      data: this.state.data.concat(data),
+      isLoading: false
+    })
+  }
+
+  handleLoadMore = async () => {
+    await this.setState({ page: this.state.page + 1, isLoading: true});
+    this.getData();
+  }
+
   render() {
+    console.log(this.state.page);
+    console.log("data", this.state.data);
+    
     return (
-      <View style={styles.container}>
-        <Text>This is the DetailScreen.</Text>
-      </View>
-    );
+      <FlatList
+        data={this.state.data}
+        style={styles.container}
+        renderItem={this.renderRow}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={this.handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={this.renderFooter}
+
+      />
+    )
   }
 }
-
-export default DetailScreen;
