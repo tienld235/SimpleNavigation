@@ -1,25 +1,38 @@
+// @flow
+
 import styles from './styles';
 import React, { Component } from 'react';
 import { TextInput, View, Platform, Alert, Keyboard } from 'react-native';
-import { Icon, Button } from 'react-native-elements';
+import { Icon, Button, IconProps } from 'react-native-elements';
 import { firebaseApp } from '../../utils/firebaseConfig';
+import { NavigationEventsProps } from "react-navigation";
+type States = {
+  email: string,
+  password: string,
+  repassword: string,
+  loadingButton: boolean
+}
 
-class RegisterScreen extends Component {
+type Props = {
+  navigation: NavigationEventsProps
+}
+class RegisterScreen extends Component<Props, States> {
   state = {
     email: '',
     password: '',
     repassword: '',
     loadingButton: false
   }
+
   static navigationOptions = {
     tabBarLabel: "Register",
-    tabBarIcon: ({ tintColor }) => {
+    tabBarIcon: ({ tintColor }: { tintColor: string }) => {
       let iconName = Platform.select({ ios: "ios-person-add", android: "md-person-add" });
       return <Icon name={iconName} type="ionicon" color={tintColor} />;
     },
   }
-  handleInput = (name) => {
-    return (text) => {
+  handleInput = (name: string) => {
+    return (text: string) => {
       this.setState({ [name]: text });
     }
   }

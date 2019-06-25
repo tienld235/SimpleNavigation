@@ -1,3 +1,5 @@
+// @flow
+
 import styles from './styles';
 import React, { Component } from 'react';
 import { View, TextInput, Alert, Keyboard } from 'react-native';
@@ -5,13 +7,22 @@ import { Button, Icon, Image } from 'react-native-elements';
 import LoginLogo from '../../assets/images/loginLogo.jpg';
 import { firebaseApp } from '../../utils/firebaseConfig';
 import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationEventsProps } from "react-navigation";
 
-class LoginScreen extends Component {
+type Props = {
+  navigation : NavigationEventsProps
+}
+type States = {
+  email: string,
+  password: string
+}
+
+class LoginScreen extends Component<Props, States> {
   state = {
     email: '',
     password: ''
   }
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
     AsyncStorage.getItem('token_login').then((userToken) => {
       this.props.navigation.navigate(userToken ? 'MainNavigator' : 'AuthTabs');
@@ -22,7 +33,7 @@ class LoginScreen extends Component {
     header: null
   }
 
-  componentDidUpdate(prevProps, prevStates) {
+  componentDidUpdate(prevProps: Object, prevStates: Object) {
     let email = this.props.navigation.getParam("email");
     let password = this.props.navigation.getParam("password");
     if (email !== prevProps.navigation.getParam("email") && password != prevProps.navigation.getParam("password")) {
@@ -30,8 +41,8 @@ class LoginScreen extends Component {
     }
   }
 
-  handleInput = (inputField) => {
-    return (text) => {
+  handleInput = (inputField: "email" | "password") => {
+    return (text: string) => {
       this.setState({ [inputField]: text })
     }
   }
