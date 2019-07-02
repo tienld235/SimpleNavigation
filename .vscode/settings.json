@@ -1,0 +1,7 @@
+{
+    "editor.fontSize": 17,
+    "editor.renderWhitespace": "all",
+    "editor.useTabStops": false,
+    "explorer.openEditors.visible": 0,
+    "editor.formatOnSave": true
+}

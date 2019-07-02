@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Button Button 1 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "marginHorizontal": 20,
+      "marginVertical": 40,
+    }
+  }
+>
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#202c41",
+        "borderColor": "#202c41",
+        "borderRadius": 6,
+        "borderWidth": 1,
+        "marginVertical": 7,
+        "opacity": 1,
+        "paddingVertical": 14,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "color": "#fff",
+            "fontSize": 18,
+            "fontWeight": "500",
+          },
+        ]
+      }
+    >
+      Press!
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Storyshots Button Button 2  1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "marginHorizontal": 20,
+      "marginVertical": 40,
+    }
+  }
+>
+  <View
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "transparent",
+        "borderColor": "#c6c6c6",
+        "borderRadius": 6,
+        "borderWidth": 1,
+        "marginVertical": 7,
+        "opacity": 1,
+        "paddingVertical": 14,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "color": "#fff",
+            "fontSize": 18,
+            "fontWeight": "500",
+          },
+          Object {
+            "color": "#202c41",
+          },
+        ]
+      }
+    >
+      Press 2!
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Storyshots CenteredView default view 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#F5FCFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text>
+    Hello Storybook
+  </Text>
+</View>
+`;

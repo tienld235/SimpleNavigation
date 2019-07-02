@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "flow": "flow"
+    "flow": "flow",
+    "storybook": "storybook start -p 7007"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.5.0",
@@ -23,12 +24,23 @@
   "devDependencies": {
     "@babel/core": "7.4.5",
     "@babel/runtime": "7.4.5",
+    "@storybook/addon-actions": "^3.4.2",
+    "@storybook/addon-links": "^3.4.2",
+    "@storybook/addon-storyshots": "^3.4.2",
+    "@storybook/addons": "^3.4.2",
+    "@storybook/react-native": "^3.4.2",
+    "babel-core": "^6.26.3",
     "babel-jest": "24.8.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "24.8.0",
     "metro-react-native-babel-preset": "0.54.1",
+    "react-dom": "^16.8.6",
     "react-test-renderer": "16.8.3"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "moduleNameMapper": {
+      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "identity-obj-proxy"
+    }
   }
 }
